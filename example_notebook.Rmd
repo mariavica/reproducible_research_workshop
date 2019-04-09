@@ -18,7 +18,7 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 
-This is a new plot: 
+I'm copying the script here. First I load the packages:
 ```{r}
 #check for packages
 list.of.packages <- c("tidyverse", "devtools","readxl","rio","knitr","dataverse")
@@ -30,7 +30,11 @@ library(readxl)
 library(tidyverse)
 library(rio)
 library(knitr)
+```
 
+
+Then I load the dataset:
+```{r}
 #get the dataset overview
 #be sure to not have a proxy behind a firewall
 get_dataset("doi:10.7910/DVN/YG9IID")
@@ -42,7 +46,11 @@ writeBin(as.vector(f), tmp)
 #get data file
 dat <- rio::import(tmp)
 rm(f,tmp)
+```
 
+
+Next, I prepare the data:
+```{r}
 #format the year variable
 current.year<-as.integer(format(Sys.Date(),"%Y"))
 #use dply and pipe operator to crete data frame to plot later
@@ -55,6 +63,13 @@ plot.dat<-
             sd_age=sd(age),
             N=n(),
             se_age=sd_age/sqrt(N))
+
+
+```
+
+
+And finally I make the plot:
+```{r}
 #plot the data frame
 ggplot(aes(y=mean_age,x=Sex,fill=Sex),data=plot.dat)+ #set the aesthetics
   geom_bar(stat="identity")+ #make a bar plot
